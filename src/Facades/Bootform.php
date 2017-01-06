@@ -1,5 +1,5 @@
 <?php
-namespace Dlouvard\Bootformlaravel;
+namespace Dlouvard\Bootformlaravel\Facades;
 /**
  * Created by PhpStorm.
  * User: dlouvard_imac

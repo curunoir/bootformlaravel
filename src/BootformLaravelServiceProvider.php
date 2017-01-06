@@ -7,13 +7,19 @@ namespace Dlouvard\Bootformlaravel;
  * Time: 22:28
  */
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\AliasLoader;
 
 class BootformLaravelServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        //AliasLoader::getInstance()->alias('BootForm',BootForm::class);
+    }
+
     public function register()
     {
         $this->app->bind('bootform', function ($app) {
-            return new BootForm($app);
+            return new BootForm($app['form'], $app['session']);
         });
     }
 
