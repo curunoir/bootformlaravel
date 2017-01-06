@@ -1,0 +1,28 @@
+{
+    "name": "dlouvard/Bootformlaravel",
+     "minimum-stability": "dev",
+    "description": "Add Bootform Laravel 5",
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": ">=5.1"
+    },
+    "keywords": [
+        "laravel",
+        "framework",
+        "bootform",
+        "laravel bootform",
+        "Damien Louvard"
+    ],
+    "authors": [
+        {
+            "name": "Damien Louvard",
+            "email": "contact@damien-louvard.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+          "Dlouvard\\Bootformlaravel\\": "src/"
+        }
+    }
+  }
+
