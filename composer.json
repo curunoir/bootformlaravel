@@ -1,5 +1,5 @@
 {
-  "name": "dlouvard/Bootformlaravel",
+  "name": "dlouvard/bootformlaravel",
   "minimum-stability": "dev",
   "description": "Add Bootform Laravel 5",
   "require": {
