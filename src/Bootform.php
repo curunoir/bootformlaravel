@@ -135,10 +135,89 @@ class BootForm
         $return .= '</div>';
         return $return;
     }
+    
+    
+    public function inputLang($type, $name, $label = null, $options = array())
+    {
+        $options['locales'] = Locale::getAll();
+        $errors = $this->session->get('errors');
+
+        if (isset($options['class'])) {
+            $options['class'] .= ' form-control';
+        } else {
+            $options['class'] = 'form-control';
+        }
+        $return = '<div class="form-group form-' . $type . ($errors && $errors->has($name) ? ' has-error' : '') . '">';
+        if ($label !== false) {
+            if (isset($options['required'])) {
+                $required = "*";
+            } else {
+                $required = null;
+            }
+
+            if ($this->horizontal || isset($options['horizontal'])) {
+                if(isset($options['left'])) $this->columns['left'] = $options['left'];
+                $return .= $this->form->label($name, $label . $required, ['class' => $this->columns['left'] . ' control-label']);
+            } else {
+                $return .= $this->form->label($name, $label . $required, ['class' => 'control-label']);
+            }
+        }
+        //Horizontal
+        if ($this->horizontal) {
+            if(isset($options['right'])) $this->columns['right'] = $options['right'];
+            $return .= '<div class="' . $this->columns['right'] . ' addoncustom">';
+        } else {
+            $return .= '<div class="addoncustom">';
+        }
+
+        foreach ($options['locales'] as $l):
+            $pTrad = [
+                'locale_id' => $l->id,
+                'model' => get_class($this->model),
+                'field' => $name
+            ];
+            $display = $l->code == session('code') ? '':'none';
+            $return .= '<div class="input-group" data-locale_id="' . $l->id . '" style="display:'.$display.'">';
+            $classL = $l->id > 1 ? 'gooTrad' : null;
+            $return .= '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="/assets/flags/' . $l->code . '.png"></span>';
+            unset($options['locales']);
+            $trad = $this->model ? $this->model->getTrad($pTrad) : null;
+            $options['data-name'] = $name;
+            $options['data-type'] = $type == 'textarea' ? $type : 'input';
+            if ($type == 'textarea') {
+                $return .= $this->form->textarea($name . '[' . $l->id . ']', $trad, $options);
+            } else {
+                $return .= $this->form->input($type, $name . '[' . $l->id . ']', $trad, $options);
+            }
+            if ($l->code == session('code'))
+                $return .= '<span class="input-group-addon showAllTrad ' . $classL . '"><i class="fa fa-flag"></i></span>';
+
+            $return .= '</div>';
+        endforeach;
+
+        //Horizontal
+        $return .= '</div>';
+
+        $return .= '</div>';
+        if ($errors && $errors->has($name)) {
+            $return .= '<p class="help-block text-right">' . $errors->first($name) . '</p>';
+        }
+        return $return;
+    }
 
     public function text($name, $label = null, $value = null, $options = array())
     {
         return $this->input('text', $name, $label, $value, $options);
+    }
+
+    public function textLang($name, $label = null, $options = array())
+    {
+        return $this->inputLang('text', $name, $label, $options);
+    }
+
+    public function textareaLang($name, $label = null, $value = null, $options = array())
+    {
+        return $this->inputLang('textarea', $name, $label, $value, $options);
     }
 
     public function file($name, $label = null, $value = null, $options = array())
