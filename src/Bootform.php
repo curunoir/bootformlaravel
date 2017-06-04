@@ -84,7 +84,7 @@ class BootForm
             $options['class'] = 'form-control';
         }
         $return = '<div class="form-group form-' . $type . ($errors && $errors->has($name) ? ' has-error' : '') . '">';
-        if ($label !== false) {
+        if ($label !== false && $type != 'checkbox' && $type != 'radio') {
             if (isset($options['required'])) {
                 $required = "*";
             } else {
@@ -115,6 +115,19 @@ class BootForm
             $return .= $this->form->checkbox($name, 1, $value, $options);
         } else {
             $return .= $this->form->input($type, $name, $value, $options);
+        }
+        if ($label !== false && ($type == 'checkbox' || $type == 'radio')) {
+            if (isset($options['required'])) {
+                $required = "*";
+            } else {
+                $required = null;
+            }
+
+            if ($this->horizontal) {
+                $return .= $this->form->label($name, $label . $required, ['class' => $this->columns['left'] . ' control-label']);
+            } else {
+                $return .= $this->form->label($name, $label . $required, ['class' => 'control-label']);
+            }
         }
 
         //Horizontal
