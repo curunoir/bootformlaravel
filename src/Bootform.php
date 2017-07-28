@@ -92,15 +92,15 @@ class BootForm
             }
 
             if ($this->horizontal) {
-                if(isset($options['left'])) $this->columns['left'] = $options['left'];
-                $return .= $this->form->label($name, $label . $required, ['class' => $this->columns['left'] . ' control-label']);
+                if (isset($options['left'])) $this->columns['left'] = $options['left'];
+                $return .= $this->form->label($name, htmlspecialchars($label) . $required, ['class' => $this->columns['left'] . ' control-label']);
             } else {
                 $return .= $this->form->label($name, $label . $required, ['class' => 'control-label']);
             }
         }
         //Horizontal
         if ($this->horizontal) {
-            if(isset($options['right'])) $this->columns['right'] = $options['right'];
+            if (isset($options['right'])) $this->columns['right'] = $options['right'];
             $return .= '<div class="' . $this->columns['right'] . '">';
         }
         if (isset($options['addon'])):
@@ -115,6 +115,15 @@ class BootForm
             $return .= $this->form->select($name, $list, $value, $options);
         } elseif ($type == 'checkbox') {
             $return .= $this->form->checkbox($name, 1, $value, $options);
+        } elseif ($type == 'datalists') {
+            $tmp = '<input list="' . $name . '" name="' . $name . '" class="form-control">';
+            $tmp .= '<datalist id="' . $name . '">';
+            foreach ($list as $l):
+                $tmp .= '<option value="'.$l.'" ' . ($value == $l ? 'selected="selected"' : null) . '>' . $l . '</option>';
+            endforeach;
+            $tmp .= '</datalist>';
+
+            $return .= $tmp;
         } else {
             $return .= $this->form->input($type, $name, $value, $options);
         }
@@ -158,7 +167,7 @@ class BootForm
             }
 
             if ($this->horizontal || isset($options['horizontal'])) {
-                if(isset($options['left'])) $this->columns['left'] = $options['left'];
+                if (isset($options['left'])) $this->columns['left'] = $options['left'];
                 $return .= $this->form->label($name, $label . $required, ['class' => $this->columns['left'] . ' control-label']);
             } else {
                 $return .= $this->form->label($name, $label . $required, ['class' => 'control-label']);
@@ -166,7 +175,7 @@ class BootForm
         }
         //Horizontal
         if ($this->horizontal) {
-            if(isset($options['right'])) $this->columns['right'] = $options['right'];
+            if (isset($options['right'])) $this->columns['right'] = $options['right'];
             $return .= '<div class="' . $this->columns['right'] . ' addoncustom">';
         } else {
             $return .= '<div class="addoncustom">';
@@ -178,8 +187,8 @@ class BootForm
                 'model' => get_class($this->model),
                 'field' => $name
             ];
-            $display = $l->code == session('code') ? '':'none';
-            $return .= '<div class="input-group" data-locale_id="' . $l->id . '" style="display:'.$display.'">';
+            $display = $l->code == session('code') ? '' : 'none';
+            $return .= '<div class="input-group" data-locale_id="' . $l->id . '" style="display:' . $display . '">';
             $classL = $l->id > 1 ? 'gooTrad' : null;
             $return .= '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="/assets/flags/' . $l->code . '.png"></span>';
             unset($options['locales']);
@@ -255,27 +264,32 @@ class BootForm
         return $this->input('select', $name, $label, $value, $options, $list);
     }
 
+    public function datalists($name, $label = null, $value = null, $list = array(), $options = array())
+    {
+        return $this->input('datalists', $name, $label, $value, $options, $list);
+    }
+
     public function textarea($name, $label = null, $value = null, $options = array())
     {
         return $this->input('textarea', $name, $label, $value, $options);
     }
 
-    public function submit($name = null, $modal = true, $value=null, $size='normal')
+    public function submit($name = null, $modal = true, $value = null, $size = 'normal')
     {
         if (!$name) {
             $name = trad('Valider');
         }
         $size = ($size == 'normal') ? null : $size;
         if ($value) {
-            return '<div class="form-submit"><button type="submit" class="btn '.$size.' btn-success" name="action" value="'.$value.'" data-action="false">' . $name . '</button></div>';
+            return '<div class="form-submit"><button type="submit" class="btn ' . $size . ' btn-success" name="action" value="' . $value . '" data-action="false">' . $name . '</button></div>';
         }
 
         if (!$modal):
-            return '<div class="form-submit"><button type="submit" class="btn '.$size.' btn-success" data-action="false">' . $name . '</button></div>'; else:
-            return '<div class="form-submit"><button type="submit" class="btn '.$size.' btn-success">' . $name . '</button></div>';
+            return '<div class="form-submit"><button type="submit" class="btn ' . $size . ' btn-success" data-action="false">' . $name . '</button></div>';
+        else:
+            return '<div class="form-submit"><button type="submit" class="btn ' . $size . ' btn-success">' . $name . '</button></div>';
         endif;
     }
-
 
 
     public function close()
