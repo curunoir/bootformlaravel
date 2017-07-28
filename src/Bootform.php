@@ -116,7 +116,7 @@ class BootForm
         } elseif ($type == 'checkbox') {
             $return .= $this->form->checkbox($name, 1, $value, $options);
         } elseif ($type == 'datalists') {
-            $tmp = '<input list="' . $name . '" name="' . $name . '" class="form-control">';
+            $tmp = '<input list="' . $name . '" name="' . $name . '" value="'.$value.'" class="form-control">';
             $tmp .= '<datalist id="' . $name . '">';
             foreach ($list as $l):
                 $tmp .= '<option value="'.$l.'" ' . ($value == $l ? 'selected="selected"' : null) . '>' . $l . '</option>';
