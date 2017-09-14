@@ -21,7 +21,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Curunoir\\Bootformlaravel\\": "src/"
+      "Dlouvard\\Bootformlaravel\\": "src/"
     }
   }
 }
