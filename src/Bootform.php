@@ -9,6 +9,8 @@
 namespace Dlouvard\Bootformlaravel;
 
 use \Form;
+use Illuminate\Support\Facades\App;
+use curunoir\translation\Models\Locale;
 
 class BootForm
 {
@@ -20,15 +22,21 @@ class BootForm
     {
         $this->form = $form;
         $this->session = $session;
+        $this->model = null;
     }
 
+    /**
+     * @param null $model
+     * @param array $options
+     * @return mixed
+     */
     public function open($model = null, array $options = array())
     {
-        $controller_name = str_plural(get_single_class($model)) . 'Controller';
+        $controller_name = str_plural($this->get_single_class($model)) . 'Controller';
         if ($model && $model->id) {
             $options['method'] = 'PUT';
             if (!isset($options['action'])) {
-                $options['action'] = ["$controller_name@update", _c($model->id)];
+                $options['action'] = ["$controller_name@update", $this->_c($model->id)];
             }
         } elseif ($model) {
             if (!isset($options['action'])) {
@@ -58,6 +66,15 @@ class BootForm
         return $this->form->model($model, $options);
     }
 
+    /**
+     * @param $type
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @param array $list
+     * @return string
+     */
     public function input($type, $name, $label = null, $value = null, $options = array(), $list = array())
     {
         $errors = $this->session->get('errors');
@@ -147,7 +164,13 @@ class BootForm
         return $return;
     }
 
-
+    /**
+     * @param $type
+     * @param $name
+     * @param null $label
+     * @param array $options
+     * @return string
+     */
     public function inputLang($type, $name, $label = null, $options = array())
     {
         $options['locales'] = Locale::getAll();
@@ -187,10 +210,11 @@ class BootForm
                 'model' => get_class($this->model),
                 'field' => $name
             ];
-            $display = $l->code == session('code') ? '' : 'none';
+
+            $display = $l->code == App::getLocale() ? '' : 'none';
             $return .= '<div class="input-group" data-locale_id="' . $l->id . '" style="display:' . $display . '">';
             $classL = $l->id > 1 ? 'gooTrad' : null;
-            $return .= '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="/assets/flags/' . $l->code . '.png"></span>';
+            $return .= '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="'.asset('/assets/img/flags/' . $l->code . '.png').'"></span>';
             unset($options['locales']);
             $trad = $this->model ? $this->model->getTrad($pTrad) : null;
             $options['data-name'] = $name;
@@ -200,7 +224,7 @@ class BootForm
             } else {
                 $return .= $this->form->input($type, $name . '[' . $l->id . ']', $trad, $options);
             }
-            if ($l->code == session('code'))
+            if ($l->code == App::getLocale())
                 $return .= '<span class="input-group-addon showAllTrad ' . $classL . '"><i class="fa fa-flag"></i></span>';
 
             $return .= '</div>';
@@ -216,41 +240,97 @@ class BootForm
         return $return;
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function text($name, $label = null, $value = null, $options = array())
     {
         return $this->input('text', $name, $label, $value, $options);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param array $options
+     * @return string
+     */
     public function textLang($name, $label = null, $options = array())
     {
         return $this->inputLang('text', $name, $label, $options);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function textareaLang($name, $label = null, $value = null, $options = array())
     {
         return $this->inputLang('textarea', $name, $label, $value, $options);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function file($name, $label = null, $value = null, $options = array())
     {
         return $this->input('file', $name, $label, $value, $options);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function email($name, $label = null, $value = null, $options = array())
     {
         return $this->input('email', $name, $label, $value, $options);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function password($name, $label = null, $value = null, $options = array())
     {
         return $this->input('password', $name, $label, $value, $options);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function checkbox($name, $label = null, $value = null, $options = array())
     {
         return $this->input('checkbox', $name, $label, $value);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $list
+     * @param array $options
+     * @return string
+     */
     public function select($name, $label = null, $value = null, $list = array(), $options = array())
     {
         if (is_array($label)) {
@@ -264,16 +344,38 @@ class BootForm
         return $this->input('select', $name, $label, $value, $options, $list);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $list
+     * @param array $options
+     * @return string
+     */
     public function datalists($name, $label = null, $value = null, $list = array(), $options = array())
     {
         return $this->input('datalists', $name, $label, $value, $options, $list);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function textarea($name, $label = null, $value = null, $options = array())
     {
         return $this->input('textarea', $name, $label, $value, $options);
     }
 
+    /**
+     * @param null $name
+     * @param bool $modal
+     * @param null $value
+     * @param string $size
+     * @return string
+     */
     public function submit($name = null, $modal = true, $value = null, $size = 'normal')
     {
         if (!$name) {
@@ -291,9 +393,27 @@ class BootForm
         endif;
     }
 
-
+    /**
+     * @return mixed
+     */
     public function close()
     {
         return $this->form->close();
     }
+
+    function get_single_class($model)
+    {
+        if ($model) {
+            return substr(get_class($model), strrpos(get_class($model), '\\') + 1);
+        }
+    }
+
+
+    function _c($data)
+    {
+        if (!is_array($data)) {
+            return App::make('Hashids\Hashids')->encode($data);
+        }
+    }
+
 }

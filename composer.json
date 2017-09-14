@@ -5,7 +5,8 @@
   "require": {
     "php": ">=5.5.9",
     "illuminate/support": ">=5.1",
-    "laravelcollective/html": "^5.4"
+    "laravelcollective/html": "^5.4",
+    "vinkla/hashids": "^3.3@dev"
   },
   "keywords": [
     "laravel",
