@@ -1,5 +1,5 @@
 {
-  "name": "dlouvard/bootformlaravel",
+  "name": "curunoir/bootformlaravel",
   "minimum-stability": "dev",
   "description": "Add Bootform Laravel 5",
   "require": {
@@ -21,7 +21,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Dlouvard\\Bootformlaravel\\": "src/"
+      "Curunoir\\Bootformlaravel\\": "src/"
     }
   }
 }
