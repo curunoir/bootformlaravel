@@ -4,7 +4,8 @@
   "description": "Add Bootform Laravel 5",
   "require": {
     "php": ">=5.5.9",
-    "illuminate/support": ">=5.1"
+    "illuminate/support": ">=5.1",
+    "laravelcollective/html": "^5.4"
   },
   "keywords": [
     "laravel",
