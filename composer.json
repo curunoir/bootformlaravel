@@ -6,7 +6,7 @@
     "php": ">=5.5.9",
     "illuminate/support": ">=5.1",
     "laravelcollective/html": "^5.4",
-    "vinkla/hashids": "^3.3@dev"
+    "vinkla/hashids": "^2.2"
   },
   "keywords": [
     "laravel",
