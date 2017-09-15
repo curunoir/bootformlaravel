@@ -21,6 +21,11 @@ class BootformLaravelServiceProvider extends ServiceProvider
         $this->app->bind('bootform', function ($app) {
             return new BootForm($app['form'], $app['session']);
         });
+
+        // Pictures for inputLang publishes in public/ressources/assets
+        $this->publishes([
+            __DIR__.'/ressources/assets/img/flags/' => base_path('/public/assets/img/flags/'),
+        ], 'assets');
     }
 
     public function provides()
