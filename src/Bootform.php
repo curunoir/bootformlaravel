@@ -32,11 +32,12 @@ class BootForm
      */
     public function open($model = null, array $options = array())
     {
+        $this->model = $model;
         $controller_name = str_plural($this->get_single_class($model)) . 'Controller';
         if ($model && $model->id) {
             $options['method'] = 'PUT';
             if (!isset($options['action'])) {
-                $options['action'] = ["$controller_name@update", $this->_c($model->id)];
+                $options['action'] = ["$controller_name@update", _c($model->id)];
             }
         } elseif ($model) {
             if (!isset($options['action'])) {
@@ -60,8 +61,6 @@ class BootForm
         if (isset($options['model'])) {
             $model = $options['model'];
         }
-
-        //dd($this->columns['left']);
 
         return $this->form->model($model, $options);
     }
@@ -214,7 +213,8 @@ class BootForm
             $display = $l->code == App::getLocale() ? '' : 'none';
             $return .= '<div class="input-group" data-locale_id="' . $l->id . '" style="display:' . $display . '">';
             $classL = $l->id > 1 ? 'gooTrad' : null;
-            $return .= '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="'.asset('/assets/img/flags/' . $l->code . '.png').'"></span>';
+            //$return .= '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="'.asset('/assets/img/flags/' . $l->code . '.png').'"></span>';
+            $return .= $this->spanFlag($l->code, $classL);
             unset($options['locales']);
             $trad = $this->model ? $this->model->getTrad($pTrad) : null;
             $options['data-name'] = $name;
@@ -238,6 +238,18 @@ class BootForm
             $return .= '<p class="help-block text-right">' . $errors->first($name) . '</p>';
         }
         return $return;
+    }
+
+    /**
+     * Returns span containing vendor locale flag if exists
+     * @param $locale
+     * @param $classL
+     */
+    public function spanFlag($locale, $classL = null)
+    {
+        if (file_exists(public_path('/assets/img/vendor/flags/' . $locale . '.png')))
+            return '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="'.asset('/assets/img/vendor/flags/' . $locale . '.png').'"></span>';
+        return '';
     }
 
     /**
@@ -405,14 +417,6 @@ class BootForm
     {
         if ($model) {
             return substr(get_class($model), strrpos(get_class($model), '\\') + 1);
-        }
-    }
-
-
-    function _c($data)
-    {
-        if (!is_array($data)) {
-            return App::make('Hashids\Hashids')->encode($data);
         }
     }
 

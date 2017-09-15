@@ -1,13 +1,7 @@
 <?php
 namespace Dlouvard\Bootformlaravel;
-/**
- * Created by PhpStorm.
- * User: dlouvard_imac
- * Date: 06/01/2017
- * Time: 22:28
- */
+
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\AliasLoader;
 
 class BootformLaravelServiceProvider extends ServiceProvider
 {
@@ -24,8 +18,12 @@ class BootformLaravelServiceProvider extends ServiceProvider
 
         // Pictures for inputLang publishes in public/ressources/assets
         $this->publishes([
-            __DIR__.'/ressources/assets/img/flags/' => base_path('/public/assets/img/flags/'),
+            __DIR__.'/ressources/assets/img/flags/' => base_path('/public/assets/img/vendor/flags/'),
         ], 'assets');
+
+        // Include the helpers file for global hashid encoding `c` and 'd' functions
+        include __DIR__.'/helpers_bootform.php';
+
     }
 
     public function provides()
