@@ -18,14 +18,14 @@ class BootformLaravelServiceProvider extends ServiceProvider
 
         // Pictures for inputLang publishes in public/ressources/assets
         $this->publishes([
-            __DIR__.'/ressources/assets/img/flags/' => base_path('/public/assets/img/vendor/flags/'),
+            __DIR__.'/ressources/assets/img/flags/' => base_path('/public/assets/vendor/img/flags/'),
         ], 'assets');
         $this->publishes([
-            __DIR__.'/ressources/assets/js/' => base_path('/public/assets/js/vendor/'),
+            __DIR__.'/ressources/assets/js/' => base_path('/public/assets/vendor/js/'),
         ], 'assets');
 
         $this->publishes([
-            __DIR__.'/ressources/assets/css/' => base_path('/public/assets/css/vendor/'),
+            __DIR__.'/ressources/assets/css/' => base_path('/public/assets/vendor/css/'),
         ], 'assets');
 
         // Include the helpers file for global hashid encoding `c` and 'd' functions

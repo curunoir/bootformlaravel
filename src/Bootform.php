@@ -246,9 +246,9 @@ class BootForm
      */
     public function spanFlag($locale, $classL = null)
     {
-        if (file_exists(public_path('/assets/img/vendor/flags/' . $locale . '.png')))
-            return '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="'.asset('/assets/img/vendor/flags/' . $locale . '.png').'"></span>';
-        return '';
+        if (file_exists(public_path('/assets/vendor/img/flags/' . $locale . '.png')))
+            return '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="'.asset('/assets/vendor/img/flags/' . $locale . '.png').'"></span>';
+        return '<span class="input-group-addon ' . $classL . '" style="min-width:42px">' . $locale .'</span>';;
     }
 
     /**
@@ -417,7 +417,7 @@ class BootForm
      */
     public function asset_js()
     {
-        return asset('/assets/js/vendor/bootformlaravel.js');
+        return asset('/assets/vendor/js/bootformlaravel.js');
     }
 
     /**
@@ -425,7 +425,7 @@ class BootForm
      */
     public function asset_css()
     {
-        return asset('/assets/css/vendor/bootformlaravel.css');
+        return asset('/assets/vendor/css/bootformlaravel.css');
     }
 
     function get_single_class($model)
