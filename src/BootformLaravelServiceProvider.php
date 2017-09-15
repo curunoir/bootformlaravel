@@ -20,6 +20,13 @@ class BootformLaravelServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/ressources/assets/img/flags/' => base_path('/public/assets/img/vendor/flags/'),
         ], 'assets');
+        $this->publishes([
+            __DIR__.'/ressources/assets/js/' => base_path('/public/assets/js/vendor/'),
+        ], 'assets');
+
+        $this->publishes([
+            __DIR__.'/ressources/assets/css/' => base_path('/public/assets/css/vendor/'),
+        ], 'assets');
 
         // Include the helpers file for global hashid encoding `c` and 'd' functions
         include __DIR__.'/helpers_bootform.php';

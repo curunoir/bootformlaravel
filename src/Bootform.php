@@ -213,7 +213,6 @@ class BootForm
             $display = $l->code == App::getLocale() ? '' : 'none';
             $return .= '<div class="input-group" data-locale_id="' . $l->id . '" style="display:' . $display . '">';
             $classL = $l->id > 1 ? 'gooTrad' : null;
-            //$return .= '<span class="input-group-addon ' . $classL . '" style="min-width:42px"><img width="25px" src="'.asset('/assets/img/flags/' . $l->code . '.png').'"></span>';
             $return .= $this->spanFlag($l->code, $classL);
             unset($options['locales']);
             $trad = $this->model ? $this->model->getTrad($pTrad) : null;
@@ -411,6 +410,22 @@ class BootForm
     public function close()
     {
         return $this->form->close();
+    }
+
+    /**
+     * Output vendor published js
+     */
+    public function asset_js()
+    {
+        return asset('/assets/js/vendor/bootformlaravel.js');
+    }
+
+    /**
+     * Output vendor published js
+     */
+    public function asset_css()
+    {
+        return asset('/assets/css/vendor/bootformlaravel.css');
     }
 
     function get_single_class($model)

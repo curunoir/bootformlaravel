@@ -1,0 +1,13 @@
+/* line 124, /Users/dlouvard/SitesSSD/Bluemega/BStat/resources/scss/_form.scss */
+.addoncustom .input-group {
+    margin-bottom: 10px !important; }
+
+/* line 127, /Users/dlouvard/SitesSSD/Bluemega/BStat/resources/scss/_form.scss */
+.addoncustom .input-group-addon {
+    padding: 2px 12px;
+    margin-bottom: 15px; }
+
+/* line 132, /Users/dlouvard/SitesSSD/Bluemega/BStat/resources/scss/_form.scss */
+.showAllTrad:hover {
+    cursor: pointer;
+    color: #008BD1; }
